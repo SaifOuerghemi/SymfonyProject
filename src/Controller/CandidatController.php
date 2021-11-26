@@ -16,12 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
 class CandidatController extends AbstractController
 {
     /**
-     * @Route("/", name="candidat_index", methods={"GET"})
+     * @Route("/list", name="candidat_list", methods={"GET"})
      */
     public function index(CandidatRepository $candidatRepository): Response
     {
         $candidat=$candidatRepository->findAll();
-        return $this->render('base.html.twig', [
+        return $this->render('candidat\index.html.twig', [
             'candidats' => $candidat,
         ]);
     }
@@ -40,7 +40,7 @@ class CandidatController extends AbstractController
             $entityManager->persist($candidat);
             $entityManager->flush();
 
-            return $this->redirectToRoute('candidat_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('candidat_list', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('candidat/new.html.twig', [
