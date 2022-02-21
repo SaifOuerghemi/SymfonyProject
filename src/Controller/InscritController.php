@@ -2,7 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Formation;
 use App\Entity\Inscrit;
+use App\Entity\User;
 use App\Form\InscritType;
 use App\Repository\InscritRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -26,26 +28,20 @@ class InscritController extends AbstractController
     }
 
     /**
-     * @Route("/new", name="inscrit_new", methods={"GET","POST"})
+     * @Route("/new/{id}", name="inscrit_new", methods={"GET","POST"})
      */
-    public function new(Request $request): Response
+    public function new(Request $request,$id): Response
     {
         $inscrit = new Inscrit();
-        $form = $this->createForm(InscritType::class, $inscrit);
-        $form->handleRequest($request);
+        $formation=$this->getDoctrine()->getManager()->getRepository(Formation::class)->find($id);
+        $userid=$this->getUser()->getUserIdentifier();
+        $user=$this->getDoctrine()->getManager()->getRepository(User::class)->find($userid);
+        $inscrit->setCandidatId($user);
+        $inscrit->setFormationId($formation);
+        $this->getDoctrine()->getManager()->persist($inscrit);
+        $this->getDoctrine()->getManager()->flush();
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->persist($inscrit);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('inscrit_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->renderForm('inscrit/new.html.twig', [
-            'inscrit' => $inscrit,
-            'form' => $form,
-        ]);
+        return $this->redirectToRoute('inscrit_index', [], Response::HTTP_SEE_OTHER);
     }
 
     /**

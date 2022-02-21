@@ -21,10 +21,11 @@
                 <td>{{ formation.id }}</td>
                 <td>{{ formation.description }}</td>
                 <td>{{ formation.prix }}</td>
-                <td>{{ formation.duree }}</td>
+                <td>{{ formation.duree }} jours</td>
                 <td>
                     <a href="{{ path('formation_show', {'id': formation.id}) }}">show</a>
                     <a href="{{ path('formation_edit', {'id': formation.id}) }}">edit</a>
+                    <a href="{{ path('inscrit_new', {'id': formation.id}) }}">inscription</a>
                 </td>
             </tr>
         {% else %}

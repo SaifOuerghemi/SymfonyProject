@@ -49,6 +49,12 @@ class Candidat
      */
     private $presences;
 
+    /**
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="candidat", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
     public function __construct()
     {
         $this->inscrits = new ArrayCollection();
@@ -183,6 +189,18 @@ class Candidat
                 $presence->setCandidatId(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

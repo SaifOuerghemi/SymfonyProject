@@ -18,7 +18,7 @@ class Inscrit
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Candidat::class, inversedBy="Inscrits")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="Inscrits")
      * @ORM\JoinColumn(nullable=false)
      */
     private $candidat_id;
@@ -36,12 +36,12 @@ class Inscrit
         return $this->id;
     }
 
-    public function getCandidatId(): ?Candidat
+    public function getCandidatId(): ?User
     {
         return $this->candidat_id;
     }
 
-    public function setCandidatId(?Candidat $candidat_id): self
+    public function setCandidatId(?User $candidat_id): self
     {
         $this->candidat_id = $candidat_id;
 
